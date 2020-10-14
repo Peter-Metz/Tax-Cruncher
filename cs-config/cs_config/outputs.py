@@ -45,14 +45,14 @@ def liability_plot(df_base, df_reform, span, mtr_opt):
     object2.visible = toggle.active
     """
     base_callback = CustomJS(code=plot_js, args={})
-    base_toggle = Toggle(label="Base (Solid)", button_type="default",
+    base_toggle = Toggle(label="Current Law (Solid)", button_type="default",
                          active=True)
     base_callback.args = {"toggle": base_toggle, "object1": iitax_base,
                           "object2": payroll_base}
     base_toggle.js_on_change('active', base_callback)
 
     reform_callback = CustomJS(code=plot_js, args={})
-    reform_toggle = Toggle(label="Reform (Dashed)", button_type="default",
+    reform_toggle = Toggle(label="Biden (Dashed)", button_type="default",
                            active=True)
     reform_callback.args = {"toggle": reform_toggle, "object1": iitax_reform,
                             "object2": payroll_reform}
@@ -131,7 +131,7 @@ def rate_plot(df_base, df_reform, span, mtr_opt):
     object4.visible = toggle.active
     """
     base_callback = CustomJS(code=plot_js, args={})
-    base_toggle = Toggle(label="Base (Solid)", button_type="default",
+    base_toggle = Toggle(label="Current Law (Solid)", button_type="default",
                          active=True)
     base_callback.args = {"toggle": base_toggle, "object1": iitax_atr_base,
                           "object2": payroll_atr_base, "object3": iitax_mtr_base,
@@ -139,7 +139,7 @@ def rate_plot(df_base, df_reform, span, mtr_opt):
     base_toggle.js_on_change('active', base_callback)
 
     reform_callback = CustomJS(code=plot_js, args={})
-    reform_toggle = Toggle(label="Reform (Dashed)", button_type="default",
+    reform_toggle = Toggle(label="Biden (Dashed)", button_type="default",
                            active=True)
     reform_callback.args = {"toggle": reform_toggle, "object1": iitax_atr_reform,
                             "object2": payroll_atr_reform, "object3": iitax_mtr_reform,
@@ -215,7 +215,7 @@ def credit_plot(df_base, df_reform, span, mtr_opt):
     object4.visible = toggle.active
     """
     base_callback = CustomJS(code=plot_js, args={})
-    base_toggle = Toggle(label="Base (Solid)", button_type="default",
+    base_toggle = Toggle(label="Current Law (Solid)", button_type="default",
                          active=True)
     base_callback.args = {"toggle": base_toggle, "object1": eitc_base,
                           "object2": cdcc_base, "object3": ctc_base,
@@ -223,7 +223,7 @@ def credit_plot(df_base, df_reform, span, mtr_opt):
     base_toggle.js_on_change('active', base_callback)
 
     reform_callback = CustomJS(code=plot_js, args={})
-    reform_toggle = Toggle(label="Reform (Dashed)", button_type="default",
+    reform_toggle = Toggle(label="Biden (Dashed)", button_type="default",
                            active=True)
     reform_callback.args = {"toggle": reform_toggle, "object1": eitc_reform,
                             "object2": cdcc_reform, "object3": ctc_reform,

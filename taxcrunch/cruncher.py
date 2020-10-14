@@ -359,13 +359,13 @@ class Cruncher:
         basic_vals2 = basic_vals2.transpose()
 
         self.basic_vals = pd.concat([basic_vals1, basic_vals2], axis=1)
-        self.basic_vals.columns = ["Base", "Reform"]
+        self.basic_vals.columns = ["Current Law", "Biden Plan"]
         self.basic_vals.index = [
             "Individual Income Tax",
             "Employee + Employer Payroll Tax",
         ]
 
-        self.basic_vals["Change"] = self.basic_vals["Reform"] - self.basic_vals["Base"]
+        self.basic_vals["Change"] = self.basic_vals["Biden Plan"] - self.basic_vals["Current Law"]
 
         self.basic_vals = self.basic_vals.round(2)
 
@@ -396,11 +396,11 @@ class Cruncher:
         )
 
         self.df_mtr = pd.concat([self.mtr_df, mtr_df_reform], axis=1)
-        self.df_mtr.columns = ["Base", "Reform"]
+        self.df_mtr.columns = ["Current Law", "Biden Plan"]
         # convert decimals to percents
         self.df_mtr = self.df_mtr * 100
 
-        self.df_mtr["Change"] = self.df_mtr["Reform"] - self.df_mtr["Base"]
+        self.df_mtr["Change"] = self.df_mtr["Biden Plan"] - self.df_mtr["Current Law"]
 
         return self.df_mtr
 
@@ -476,7 +476,7 @@ class Cruncher:
         df_calc_mtr = self.calc_mtr.dataframe(calculation).transpose()
 
         self.df_calc = pd.concat([df_calc1, df_calc2, df_calc_mtr], axis=1)
-        self.df_calc.columns = ["Base", "Reform", "+ $1 ({})".format(self.mtr_options)]
+        self.df_calc.columns = ["Current Law", "Biden Plan", "+ $1 ({})".format(self.mtr_options)]
         self.df_calc.index = labels
 
         self.df_calc = self.df_calc.round(2)
@@ -495,6 +495,6 @@ class Cruncher:
         self.df_calc_diff = self.df_calc.copy()
         if len(self.df_calc_diff.columns) == 3:
             del self.df_calc_diff["+ $1"]
-        calc_diff_vals = self.df_calc_diff["Reform"] - self.df_calc_diff["Base"]
+        calc_diff_vals = self.df_calc_diff["Biden Plan"] - self.df_calc_diff["Current Law"]
         self.df_calc_diff["Change"] = calc_diff_vals
         return self.df_calc_diff

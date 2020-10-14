@@ -4,6 +4,7 @@ import paramtools
 import pandas as pd
 from .outputs import credit_plot, rate_plot, liability_plot
 from .constants import MetaParameters
+from .helpers import biden_ref
 from bokeh.models import ColumnDataSource
 from taxcrunch.cruncher import Cruncher, CruncherParams
 from taxcrunch.multi_cruncher import Batch
@@ -86,7 +87,7 @@ def run_model(meta_params_dict, adjustment):
     params.adjust(adjustment["Tax Information"], raise_errors=False)
     newvals = params.specification()
 
-    crunch = Cruncher(inputs=newvals, custom_reform="biden.json")
+    crunch = Cruncher(inputs=newvals, custom_reform=biden_ref)
 
     # make dataset for bokeh plots
     ivar = crunch.batch_ivar
@@ -129,11 +130,11 @@ def run_model(meta_params_dict, adjustment):
         span = int(ivar[24])
         df[24] = increments
 
-    BIDEN_PATH = os.path.join(CURRENT_PATH, "biden.json")
+    # BIDEN_PATH = os.path.join(CURRENT_PATH, "biden.json")
 
     b = Batch(df)
     df_base = b.create_table()
-    df_reform = b.create_table(reform_file=BIDEN_PATH)
+    df_reform = b.create_table(reform_file=biden_ref)
 
     # compute average tax rates
     df_base['IATR'] = df_base['Individual Income Tax'] / df_base['AGI']

@@ -34,6 +34,7 @@ def get_inputs(meta_params_dict):
         "page",
         "sage",
         "depx",
+        "dep6",
         "dep13",
         "dep17",
         "dep18",
@@ -56,6 +57,7 @@ def get_inputs(meta_params_dict):
         "sstb",
         "w2paid",
         "qualprop",
+        "cap_burden",
         "mtr_options",
         "schema"
     ]
@@ -92,49 +94,51 @@ def run_model(meta_params_dict, adjustment):
     # make dataset for bokeh plots
     ivar = crunch.batch_ivar
     _, mtr_opt, _ = crunch.taxsim_inputs()
-    df = pd.concat([ivar] * 10000, ignore_index=True)
-    increments = pd.DataFrame(list(range(0, 1000000, 100)))
+    df = pd.concat([ivar] * 20000, ignore_index=True)
+    increments = pd.DataFrame(list(range(0, 2000000, 100)))
 
     # use Calculation Option to determine what var to increment
     if mtr_opt == 'Taxpayer Earnings':
-        span = int(ivar[9])
-        df[9] = increments
-    elif mtr_opt == 'Spouse Earnings':
         span = int(ivar[10])
         df[10] = increments
-    elif mtr_opt == 'Short Term Gains':
-        span = int(ivar[13])
-        df[13] = increments
-    elif mtr_opt == 'Long Term Gains':
-        span = int(ivar[14])
-        df[14] = increments
-    elif mtr_opt == 'Qualified Dividends':
-        span = int(ivar[14])
+    elif mtr_opt == 'Spouse Earnings':
+        span = int(ivar[11])
         df[11] = increments
-    elif mtr_opt == 'Interest Received':
+    elif mtr_opt == 'Qualified Dividends':
         span = int(ivar[12])
         df[12] = increments
+    elif mtr_opt == 'Interest Received':
+        span = int(ivar[13])
+        df[13] = increments
+    elif mtr_opt == 'Short Term Gains':
+        span = int(ivar[14])
+        df[14] = increments
+    elif mtr_opt == 'Long Term Gains':
+        span = int(ivar[15])
+        df[15] = increments
+    elif mtr_opt == 'Business Income':
+        span = int(ivar[16])
+        df[16] = increments
     elif mtr_opt == 'Pensions':
-        span = int(ivar[17])
-        df[17] = increments
+        span = int(ivar[22])
+        df[22] = increments
     elif mtr_opt == 'Gross Social Security Benefits':
-        span = int(ivar[18])
-        df[18] = increments
-    elif mtr_opt == 'Real Estate Taxes Paid':
-        span = int(ivar[20])
-        df[20] = increments
-    elif mtr_opt == 'Mortgage':
         span = int(ivar[23])
         df[23] = increments
-    elif mtr_opt == 'Business Income':
-        span = int(ivar[24])
-        df[24] = increments
+    elif mtr_opt == 'Real Estate Taxes Paid':
+        span = int(ivar[25])
+        df[25] = increments
+    elif mtr_opt == 'Mortgage':
+        span = int(ivar[28])
+        df[28] = increments
+
 
     # BIDEN_PATH = os.path.join(CURRENT_PATH, "biden.json")
 
     b = Batch(df)
     df_base = b.create_table()
     df_reform = b.create_table(reform_file=biden_ref)
+    df_reform['CTC Refundable'] = df_reform['CTC Refundable'] + df_reform['CTC Biden']
 
     # compute average tax rates
     df_base['IATR'] = df_base['Individual Income Tax'] / df_base['AGI']

@@ -60,6 +60,7 @@ class Batch:
             "c07220",
             "c11070",
             "c07180",
+            "ctc_new",
             "eitc",
             "c62100",
             "c09600",
@@ -81,6 +82,7 @@ class Batch:
             "Taxable Inc",
             "CTC",
             "CTC Refundable",
+            "CTC Biden",
             "Child care credit",
             "EITC",
             "AMT Taxable Income",
@@ -107,7 +109,7 @@ class Batch:
         else:
             ivar = pd.read_csv(self.path, sep=",", engine="python", header=None)
         # check that input CSV has 28 columns
-        assert len(ivar.columns) == 28
+        # assert len(ivar.columns) == 28
         # check that year is the same across all rows
         assert ivar[1].max() == ivar[1].min()
         rows = len(ivar)
@@ -120,7 +122,7 @@ class Batch:
         params_df = pd.DataFrame(array).transpose()
 
         params_marg = params_df.copy()
-        params_marg.loc[:, 9] = params_marg.loc[:, 9] + FINITE_DIFF
+        params_marg.loc[:, 10] = params_marg.loc[:, 10] + FINITE_DIFF
 
         # translate INPUT variables into OUTPUT variables
         c = cr.Cruncher()

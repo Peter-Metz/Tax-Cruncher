@@ -113,11 +113,11 @@ class Cruncher:
         # Single -> 1; Joint -> 2
         mstat_int = np.where(mstat == "Single", 1, 2)
         # convert sstb to int
-        sstb = ivar.loc[:, 25]
+        sstb = ivar.loc[:, 17]
         # True -> 1; False -> 0
         sstb_int = np.where(sstb, 1, 0)
         self.batch_ivar.loc[:, 2] = mstat_int
-        self.batch_ivar.loc[:, 25] = sstb_int
+        self.batch_ivar.loc[:, 17] = sstb_int
         return self.batch_ivar
 
     def translate(self, ivar):
@@ -143,44 +143,47 @@ class Cruncher:
             2,
         )
         assert np.all(np.logical_or(mars == 1, np.logical_or(mars == 2, mars == 4)))
+        self.invar["nu06"] = ivar.loc[:, 6]
         self.invar["MARS"] = mars
-        self.invar["f2441"] = ivar.loc[:, 6]
-        self.invar["n24"] = ivar.loc[:, 7]
-        num_eitc_qualified_kids = ivar.loc[:, 8]
+        self.invar["f2441"] = ivar.loc[:, 7]
+        self.invar["n24"] = ivar.loc[:, 8]
+        num_eitc_qualified_kids = ivar.loc[:, 9]
         self.invar["EIC"] = np.minimum(num_eitc_qualified_kids, 3)
         num_taxpayers = np.where(mars == 2, 2, 1)
         self.invar["XTOT"] = num_taxpayers + num_deps
-        self.invar["e00200p"] = ivar.loc[:, 9]
-        self.invar["e00200s"] = ivar.loc[:, 10]
+        self.invar["e00200p"] = ivar.loc[:, 10]
+        self.invar["e00200s"] = ivar.loc[:, 11]
         self.invar["e00200"] = self.invar["e00200p"] + self.invar["e00200s"]
-        self.invar["e00650"] = ivar.loc[:, 11]
+        self.invar["e00650"] = ivar.loc[:, 12]
         self.invar["e00600"] = self.invar["e00650"]
-        self.invar["e00300"] = ivar.loc[:, 12]
-        self.invar["p22250"] = ivar.loc[:, 13]
-        self.invar["p23250"] = ivar.loc[:, 14]
-        e02000 = ivar.loc[:, 15]
-        self.invar["e00800"] = ivar.loc[:, 16]
-        self.invar["e01700"] = ivar.loc[:, 17]
-        self.invar["e01500"] = self.invar["e01700"]
-        self.invar["e02400"] = ivar.loc[:, 18]
-        self.invar["e02300"] = ivar.loc[:, 19]
-        # no Tax-Calculator use of TAXSIM variable 22, non-taxable transfers
-        # no Tax-Calculator use of TAXSIM variable 23, rent paid
-        self.invar["e18500"] = ivar.loc[:, 20]
-        self.invar["e18400"] = ivar.loc[:, 21]
-        self.invar["e32800"] = ivar.loc[:, 22]
-        self.invar["e19200"] = ivar.loc[:, 23]
-        self.invar["e26270"] = ivar.loc[:, 24]
-        # e26270 is included in e02000
-        self.invar["e02000"] = self.invar["e26270"] + e02000
-        sstb_bool = ivar.loc[:, 25]
-        # convert both Cruncher and Batch inputs (i.e. True/False and 0/1
+        self.invar["e00300"] = ivar.loc[:, 13]
+        self.invar["p22250"] = ivar.loc[:, 14]
+        self.invar["p23250"] = ivar.loc[:, 15]
+        self.invar["e26270"] = ivar.loc[:, 16]
+        sstb_bool = ivar.loc[:, 17]
+        # convert both Cruncher and Batch inputs (i.e. True/False and 0/1)
         self.invar["PT_SSTB_income"] = np.where(
             np.logical_or(sstb_bool, sstb_bool == 1), 1, 0
         )
-        self.invar["PT_binc_w2_wages"] = ivar.loc[:, 26]
-        self.invar["PT_ubia_property"] = ivar.loc[:, 27]
+        self.invar["PT_binc_w2_wages"] = ivar.loc[:, 18]
+        self.invar["PT_ubia_property"] = ivar.loc[:, 19]
 
+        e02000 = ivar.loc[:, 20]
+        self.invar["e00800"] = ivar.loc[:, 21]
+        self.invar["e01700"] = ivar.loc[:, 22]
+        self.invar["e01500"] = self.invar["e01700"]
+        self.invar["e02400"] = ivar.loc[:, 23]
+        self.invar["e02300"] = ivar.loc[:, 24]
+        # no Tax-Calculator use of TAXSIM variable 22, non-taxable transfers
+        # no Tax-Calculator use of TAXSIM variable 23, rent paid
+        self.invar["e18500"] = ivar.loc[:, 25]
+        self.invar["e18400"] = ivar.loc[:, 26]
+        self.invar["e32800"] = ivar.loc[:, 27]
+        self.invar["e19200"] = ivar.loc[:, 28]
+        
+        # e26270 is included in e02000
+        self.invar["e02000"] = self.invar["e26270"] + e02000
+        
         return self.invar
 
     def choose_mtr(self):
@@ -365,7 +368,9 @@ class Cruncher:
             "Employee + Employer Payroll Tax",
         ]
 
-        self.basic_vals["Change"] = self.basic_vals["Biden Plan"] - self.basic_vals["Current Law"]
+        self.basic_vals["Change"] = (
+            self.basic_vals["Biden Plan"] - self.basic_vals["Current Law"]
+        )
 
         self.basic_vals = self.basic_vals.round(2)
 
@@ -411,12 +416,80 @@ class Cruncher:
         Returns:
             self.df_mtr: a Pandas dataframe with basic output
         """
+        corp_rev_biden = {2021: 175598795234, 2022: 152920952040,
+            2023: 171354346844, 2024: 183109348468,
+            2025: 195411078716, 2026: 198933433969,
+            2027: 211610303777, 2028: 220027985881,
+            2029: 228211335814, 2030: 236808677430,
+        }
+
+        corp_rev_base = { 2021: 122754000000, 2022: 234076000000,
+            2023: 289276000000, 2024: 318899000000,
+            2025: 347329000000, 2026: 352277000000,
+            2027: 355589000000, 2028: 368086000000,
+            2029: 377565000000, 2030: 386582000000,
+        }
+
+        wage_tot = {2021: 8460553765020, 2022: 8845478323469,
+            2023: 9202171239033, 2024: 9589975739423,
+            2025: 10014900909657, 2026: 10471222267286,
+            2027: 10945241901540, 2028: 11406635466724,
+            2029: 11839558451386, 2030: 12274783492365,
+        }
+
+        cap_tot = {2021: 1791843392597, 2022: 1849339744234,
+            2023: 1891207321789, 2024: 1963810838262,
+            2025: 2047945162183, 2026: 2129982386992,
+            2027: 2212908391457, 2028: 2295116285291,
+            2029: 2375653265711, 2030: 2464712664336,
+        }
+
+        cap_burden = float(self.params.to_array("cap_burden"))
+
+        wage = int(self.data["e00200"])
+        cap = int(
+            self.data["p22250"]
+            + self.data["p23250"]
+            + self.data["e00650"]
+            + self.data["e00650"]
+            + self.data["e00300"]
+            + self.data["e02000"]
+        )
+        year = int(self.data["FLPDYR"])
+
+        wage_share = wage / wage_tot[year]
+        cap_share = cap / cap_tot[year]
+
+        wage_inc_base = wage_share * corp_rev_base[year] * (1-cap_burden)
+        wage_inc_biden = wage_share * corp_rev_biden[year] * (1-cap_burden)
+
+        cap_inc_base = cap_share * corp_rev_base[year] * cap_burden
+        cap_inc_biden = cap_share * corp_rev_biden[year] * cap_burden
+
+        inc_dict = {
+            "Corporate Tax Incidence (Wages)": [
+                wage_inc_base,
+                wage_inc_biden,
+                wage_inc_biden - wage_inc_base,
+            ],
+            "Corporate Tax Incidence (Capital)": [
+                cap_inc_base,
+                cap_inc_biden,
+                cap_inc_biden - cap_inc_base,
+            ],
+        }
+
+        inc_df = pd.DataFrame.from_dict(
+            inc_dict, orient="index", columns=["Current Law", "Biden Plan", "Change"]
+        )
+
         self.df_basic = pd.concat(
             [
                 self.df_basic_vals.iloc[:1],
                 self.df_mtr.iloc[:1],
                 self.df_basic_vals.iloc[1:],
                 self.df_mtr.iloc[1:],
+                inc_df,
             ]
         )
         self.df_basic = self.df_basic.round(2)
@@ -447,7 +520,7 @@ class Cruncher:
             "c09600",
             "niit",
             "c05800",
-            "payrolltax"
+            "payrolltax",
         ]
         labels = [
             "Adjusted Gross Income (AGI)",
@@ -466,7 +539,7 @@ class Cruncher:
             "AMT Liability",
             "Net Investment Income Tax",
             "Income Tax Before Credits (Regular + AMT)",
-            "Payroll Tax (Employee + Employer)"
+            "Payroll Tax (Employee + Employer)",
         ]
 
         df_calc1 = self.calc1.dataframe(calculation).transpose()
@@ -476,8 +549,23 @@ class Cruncher:
         df_calc_mtr = self.calc_mtr.dataframe(calculation).transpose()
 
         self.df_calc = pd.concat([df_calc1, df_calc2, df_calc_mtr], axis=1)
-        self.df_calc.columns = ["Current Law", "Biden Plan", "+ $1 ({})".format(self.mtr_options)]
+        self.df_calc.columns = [
+            "Current Law",
+            "Biden Plan",
+            "+ $1 ({})".format(self.mtr_options),
+        ]
         self.df_calc.index = labels
+
+        taxbc = self.calc_reform.array("taxbc")
+        ctc_new = self.calc_reform.array("ctc_new")
+        actc = self.calc_reform.array("c11070")
+        ctc = self.calc_reform.array("c07220")
+
+        ctc_nonref = np.where(ctc_new > 0, min(taxbc, ctc_new), ctc)
+        ctc_ref = np.where(ctc_new > 0, max(ctc_new - taxbc, 0), actc)
+
+        self.df_calc["Biden Plan"]["Child Tax Credit (CTC)"] = ctc_nonref
+        self.df_calc["Biden Plan"]["CTC Refundable"] = ctc_ref
 
         self.df_calc = self.df_calc.round(2)
 
@@ -495,6 +583,8 @@ class Cruncher:
         self.df_calc_diff = self.df_calc.copy()
         if len(self.df_calc_diff.columns) == 3:
             del self.df_calc_diff["+ $1"]
-        calc_diff_vals = self.df_calc_diff["Biden Plan"] - self.df_calc_diff["Current Law"]
+        calc_diff_vals = (
+            self.df_calc_diff["Biden Plan"] - self.df_calc_diff["Current Law"]
+        )
         self.df_calc_diff["Change"] = calc_diff_vals
         return self.df_calc_diff

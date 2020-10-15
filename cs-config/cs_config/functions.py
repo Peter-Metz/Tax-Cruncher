@@ -94,8 +94,8 @@ def run_model(meta_params_dict, adjustment):
     # make dataset for bokeh plots
     ivar = crunch.batch_ivar
     _, mtr_opt, _ = crunch.taxsim_inputs()
-    df = pd.concat([ivar] * 20000, ignore_index=True)
-    increments = pd.DataFrame(list(range(0, 2000000, 100)))
+    df = pd.concat([ivar] * 10000, ignore_index=True)
+    increments = pd.DataFrame(list(range(0, 2000000, 200)))
 
     # use Calculation Option to determine what var to increment
     if mtr_opt == 'Taxpayer Earnings':
@@ -138,7 +138,7 @@ def run_model(meta_params_dict, adjustment):
     b = Batch(df)
     df_base = b.create_table()
     df_reform = b.create_table(reform_file=biden_ref)
-    df_reform['CTC Refundable'] = df_reform['CTC Refundable'] + df_reform['CTC Biden']
+    df_reform['CTC New'] = df_reform['CTC Refundable'] + df_reform['CTC Biden']
 
     # compute average tax rates
     df_base['IATR'] = df_base['Individual Income Tax'] / df_base['AGI']

@@ -546,13 +546,15 @@ class Cruncher:
 
         df_calc2 = self.calc_reform.dataframe(calculation).transpose()
 
-        df_calc_mtr = self.calc_mtr.dataframe(calculation).transpose()
+        # df_calc_mtr = self.calc_mtr.dataframe(calculation).transpose()
 
-        self.df_calc = pd.concat([df_calc1, df_calc2, df_calc_mtr], axis=1)
+        # self.df_calc = pd.concat([df_calc1, df_calc2, df_calc_mtr], axis=1)
+        self.df_calc = pd.concat([df_calc1, df_calc2], axis=1)
+        # marg_str = "+ $1 ({})".format(self.mtr_options)
         self.df_calc.columns = [
             "Current Law",
-            "Biden Plan",
-            "+ $1 ({})".format(self.mtr_options),
+            "Biden Plan"
+            # marg_str
         ]
         self.df_calc.index = labels
 
@@ -564,8 +566,19 @@ class Cruncher:
         ctc_nonref = np.where(ctc_new > 0, min(taxbc, ctc_new), ctc)
         ctc_ref = np.where(ctc_new > 0, max(ctc_new - taxbc, 0), actc)
 
+        # taxbc_marg = self.calc_mtr.array("taxbc")
+        # ctc_new_marg = self.calc_mtr.array("ctc_new")
+        # actc_marg = self.calc_mtr.array("c11070")
+        # ctc_marg = self.calc_mtr.array("c07220")
+
+        # ctc_nonref_marg = np.where(ctc_new_marg > 0, min(taxbc_marg, ctc_new_marg), ctc_marg)
+        # ctc_ref_marg = np.where(ctc_new_marg > 0, max(ctc_new_marg - taxbc_marg, 0), actc_marg)
+
         self.df_calc["Biden Plan"]["Child Tax Credit (CTC)"] = ctc_nonref
         self.df_calc["Biden Plan"]["CTC Refundable"] = ctc_ref
+
+        # self.df_calc[marg_str]["Child Tax Credit (CTC)"] = ctc_nonref_marg
+        # self.df_calc[marg_str]["CTC Refundable"] = ctc_ref_marg
 
         self.df_calc = self.df_calc.round(2)
 

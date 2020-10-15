@@ -9,11 +9,11 @@ class MetaParameters(paramtools.Parameters):
             "title": "Year",
             "description": "Year for parameters.",
             "type": "int",
-            "value": 2020,
+            "value": 2021,
             "validators": {
                 "choice": {
                     "choices": [
-                        yr for yr in range(2020, 2030 + 1)
+                        yr for yr in range(2021, 2030 + 1)
                     ]
                 }
             }

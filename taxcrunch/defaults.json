@@ -120,6 +120,24 @@
             }
         }
     },
+    "dep6": {
+        "title": "Number of children under 6",
+        "description": "For Child Tax Credit calculation",
+        "section_1": "Dependents",
+        "notes": "",
+        "type": "int",
+        "value": [
+            {
+                "value": 0
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": "dep13"
+            }
+        }
+    },
     "dep13": {
         "title": "Number of children under 13 with eligible child care expenses",
         "description": "Dependent Care Credit",
@@ -288,7 +306,7 @@
             }
         }
     },
-        "businc": {
+    "businc": {
         "title": "Business income",
         "description": "Income from partnerships, limited-liability companies, and S corporations.",
         "section_1": "Income",
@@ -531,6 +549,24 @@
             }
         }
     },
+    "cap_burden": {
+        "title": "Capital Burden",
+        "description": "Percentage of total corporate tax burden allocated to capital. The remainder of the corporate tax burden is allocated to wages.",
+        "section_1": "Corporate Tax Incidence",
+        "notes": "",
+        "type": "float",
+        "value": [
+            {
+                "value": 0.8
+            }
+        ],
+        "validators": {
+            "range": {
+                "min": 0,
+                "max": 1
+            }
+        }
+    },    
     "mtr_options": {
         "title": "Options for skyline chart analysis",
         "description": "Skyline charts will be created by incrementing this measure.",
@@ -547,6 +583,7 @@
                 "choices": [
                     "Taxpayer Earnings",
                     "Spouse Earnings",
+                    "Business Income",
                     "Short Term Gains",
                     "Long Term Gains",
                     "Qualified Dividends",
@@ -554,8 +591,7 @@
                     "Pensions",
                     "Gross Social Security Benefits",
                     "Real Estate Taxes Paid",
-                    "Mortgage",
-                    "Business Income"
+                    "Mortgage"
                 ]
             }
         }

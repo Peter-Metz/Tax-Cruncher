@@ -17,7 +17,7 @@ CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 def get_version():
     version = taxcrunch.__version__
-    return f"Tax-Cruncher v{version}"
+    return f"Biden-Tax-Cruncher v0.1.0"
 
 
 def get_inputs(meta_params_dict):

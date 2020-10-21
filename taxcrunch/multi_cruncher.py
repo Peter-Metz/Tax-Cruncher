@@ -2,7 +2,7 @@ import sys
 import os
 import numpy as np
 import pandas as pd
-import taxcalc as tc
+import taxcalc_biden as tc
 import behresp as br
 from paramtools import Parameters
 from taxcrunch import cruncher as cr

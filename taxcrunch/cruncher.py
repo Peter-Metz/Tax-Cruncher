@@ -2,7 +2,7 @@ import json
 import os
 import numpy as np
 import pandas as pd
-import taxcalc as tc
+import taxcalc_biden as tc
 
 from paramtools import Parameters
 

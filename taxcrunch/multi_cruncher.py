@@ -2,7 +2,7 @@ import sys
 import os
 import numpy as np
 import pandas as pd
-import taxcalc_biden as tc
+import taxcalc as tc
 import behresp as br
 from paramtools import Parameters
 from taxcrunch import cruncher as cr
@@ -57,10 +57,11 @@ class Batch:
             "c02500",
             "c04470",
             "c04800",
-            "c07220",
-            "c11070",
-            "c07180",
-            "ctc_new",
+            "c07220", # CTC
+            "c11070", # CTC refundable
+            "ctc_new", # CTC Biden
+            "c07180", # CDCC
+            "cdcc_new", #CDCC Biden
             "eitc",
             "c62100",
             "c09600",
@@ -84,6 +85,7 @@ class Batch:
             "CTC Refundable",
             "CTC Biden",
             "Child care credit",
+            "Child care credit Biden",
             "EITC",
             "AMT Taxable Income",
             "AMT Liability",

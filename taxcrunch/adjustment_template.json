@@ -3,7 +3,7 @@
         {"value": 2021}
     ],
     "mstat": [
-        {"value": "Joint"}
+        {"value": "Single"}
     ],
     "page": [
         {"value": 0}
@@ -24,7 +24,7 @@
         {"value": 0}
     ],
     "pwages": [
-        {"value": 0}
+        {"value": 500000}
     ],
     "swages": [
         {"value": 0}
@@ -66,13 +66,13 @@
         {"value": 0}
     ],
     "mortgage": [
-        {"value": 0}
+        {"value": 100000}
     ],
     "businc": [
-        {"value": 600000}
+        {"value": 0}
     ],
     "w2paid": [
-        {"value": 1000000}
+        {"value": 0}
     ],
     "sstb": [
         {"value": false}

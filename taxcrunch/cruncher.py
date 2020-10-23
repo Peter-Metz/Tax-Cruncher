@@ -2,7 +2,7 @@ import json
 import os
 import numpy as np
 import pandas as pd
-import taxcalc_biden as tc
+import taxcalc as tc
 
 from paramtools import Parameters
 
@@ -244,15 +244,20 @@ class Cruncher:
             "https://raw.githubusercontent.com/"
             "PSLmodels/Tax-Calculator/master/taxcalc/reforms/"
         )
-
+        if isinstance(self.baseline, str):
+            exists = os.path.isfile(self.baseline)
         # if no baseline policy is specified, baseline is current law
         if self.baseline is None:
             self.pol = tc.Policy()
         # if a baseline policy is specified, first see if user created json
         # policy file
         else:
-            exists = os.path.isfile(self.baseline)
-            if exists:
+            if isinstance(self.baseline, dict):
+                baseline = self.baseline
+                self.pol = tc.Policy()
+                self.pol.implement_reform(baseline)
+            
+            elif exists:
                 baseline_file = self.baseline
                 self.pol = tc.Policy()
                 self.pol.implement_reform(tc.Policy.read_json_reform(baseline_file))
@@ -372,7 +377,9 @@ class Cruncher:
             self.basic_vals["Biden Plan"] - self.basic_vals["Current Law"]
         )
 
-        self.basic_vals = self.basic_vals.round(2)
+        df_a = self.basic_vals / 10
+        df_b = df_a.round(0)
+        self.basic_vals = df_b * 10
 
         return self.basic_vals
 
@@ -423,7 +430,7 @@ class Cruncher:
             2029: 228211335814, 2030: 236808677430,
         }
 
-        corp_rev_base = { 2021: 122754000000, 2022: 234076000000,
+        corp_rev_base = {2021: 122754000000, 2022: 234076000000,
             2023: 289276000000, 2024: 318899000000,
             2025: 347329000000, 2026: 352277000000,
             2027: 355589000000, 2028: 368086000000,
@@ -520,7 +527,7 @@ class Cruncher:
             "c09600",
             "niit",
             "c05800",
-            "payrolltax",
+            "payrolltax"
         ]
         labels = [
             "Adjusted Gross Income (AGI)",
@@ -566,6 +573,8 @@ class Cruncher:
         ctc_nonref = np.where(ctc_new > 0, min(taxbc, ctc_new), ctc)
         ctc_ref = np.where(ctc_new > 0, max(ctc_new - taxbc, 0), actc)
 
+        cdcc_new = self.calc_reform.array("cdcc_new")
+
         # taxbc_marg = self.calc_mtr.array("taxbc")
         # ctc_new_marg = self.calc_mtr.array("ctc_new")
         # actc_marg = self.calc_mtr.array("c11070")
@@ -576,11 +585,16 @@ class Cruncher:
 
         self.df_calc["Biden Plan"]["Child Tax Credit (CTC)"] = ctc_nonref
         self.df_calc["Biden Plan"]["CTC Refundable"] = ctc_ref
+        self.df_calc["Biden Plan"]["Child Care Credit"] = cdcc_new
 
         # self.df_calc[marg_str]["Child Tax Credit (CTC)"] = ctc_nonref_marg
         # self.df_calc[marg_str]["CTC Refundable"] = ctc_ref_marg
 
-        self.df_calc = self.df_calc.round(2)
+        # round to nearest 10
+        df_a = self.df_calc / 10
+        df_b = df_a.round(0)
+        self.df_calc = df_b * 10
+
 
         return self.df_calc
 

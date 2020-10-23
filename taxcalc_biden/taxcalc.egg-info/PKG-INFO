@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: taxcalc
+Version: 0.0.0
+Summary: Calculates federal tax liabilities from individual data under different policy proposals.
+Home-page: UNKNOWN
+Author: Peter Metz
+Author-email: pmetzdc@gmail.com
+License: UNKNOWN
+Description: placeholder
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown

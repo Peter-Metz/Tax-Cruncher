@@ -139,6 +139,7 @@ def run_model(meta_params_dict, adjustment):
     df_base = b.create_table()
     df_reform = b.create_table(reform_file=biden_ref)
     df_reform['CTC New'] = df_reform['CTC Refundable'] + df_reform['CTC Biden']
+    df_reform['CDCC'] = df_reform['Child care credit'] + df_reform['Child care credit Biden']
 
     # compute average tax rates
     df_base['IATR'] = df_base['Individual Income Tax'] / df_base['AGI']

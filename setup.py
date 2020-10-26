@@ -17,7 +17,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/pslmodels/Tax-Cruncher",
     packages=setuptools.find_packages(),
-    install_requires=["taxcalc", "paramtools"],
+    install_requires=["paramtools"],
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",

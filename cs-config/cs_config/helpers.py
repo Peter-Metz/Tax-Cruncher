@@ -71,7 +71,7 @@ biden_ref = {
                    2022: [0.0, 0.0, 0.0, 0.0, 0.0]},
       "CTC_new_prt": {2021: 0.05, 2022: 0.0},
       "ID_BenefitCap_rt": {2021: 0.28},
-      "ID_BenefitCap_Switch": {2021: [True, True, True, True, True, True, True]},
+      "ID_BenefitCap_Switch": {2021: [False, False, False, False, False, False, False]},
       "SS_Earnings_thd": {2021: 400000.0},
       "ALD_IRAContributions_hc": {2021: 1.0},
       "ALD_KEOGH_SEP_hc": {2021: 1.0},

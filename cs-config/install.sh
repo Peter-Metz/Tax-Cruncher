@@ -3,7 +3,7 @@
 git clone https://github.com/Peter-Metz/Tax-Cruncher
 cd Tax-Cruncher
 git checkout biden-local
-conda install "conda-forge::paramtools>=0.15.1" "bokeh<2.0.0"
+conda install "conda-forge::paramtools>=0.15.1" "bokeh<2.0.0" "requests numba numpy pandas"
 pip install -e .
 cd taxcalc_biden
 pip install -e .

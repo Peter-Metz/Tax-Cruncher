@@ -103,8 +103,8 @@
         }
     },
     "depx": {
-        "title": "Number of dependents",
-        "description": "Part of personal exemption calculation",
+        "title": "Total number of dependents",
+        "description": "",
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
@@ -122,7 +122,7 @@
     },
     "dep6": {
         "title": "Number of children under 6",
-        "description": "For Child Tax Credit calculation",
+        "description": "Child Tax Credit",
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
@@ -157,8 +157,8 @@
         }
     },
     "dep17": {
-        "title": "Number of children under 17 for the entire tax year",
-        "description": "Child Tax Credit (include children under 13)",
+        "title": "Number of children under 17",
+        "description": "Child Tax Credit",
         "section_1": "Dependents",
         "notes": "",
         "type": "int",
@@ -175,8 +175,8 @@
         }
     },
     "dep18": {
-        "title": "Number of qualifying children for EITC",
-        "description": "Typically younger than 19 or 24 and a full-time student (include children under 17)",
+        "title": "Number of children under 19 or under 24 and a full-time student",
+        "description": "EITC calculation",
         "section_1": "Dependents",
         "notes": "",
         "type": "int",

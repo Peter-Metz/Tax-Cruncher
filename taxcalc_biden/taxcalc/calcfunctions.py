@@ -690,9 +690,9 @@ def ItemDed(e17500_capped, e18400_capped, e18500_capped, e19200_capped,
         c21040 = 0.
         c04470 = c21060
     c04470 = min(c04470, ID_c[MARS - 1])
-    # add 28% limit
-    if ID_BenefitCap_rt < 1 and posagi > 400000:
-        c04470 = c04470 * (1 - ID_BenefitCap_rt)
+    # # add 28% limit
+    # if ID_BenefitCap_rt < 1 and posagi > 400000:
+    #     c04470 = c04470 * (1 - ID_BenefitCap_rt)
     # Return total itemized deduction amounts and components
     return (c17000, c18300, c19200, c19700, c20500, c20800,
             c21040, c21060, c04470)
@@ -1963,20 +1963,24 @@ def BenefitSurtax(calc):
     Computes itemized-deduction-benefit surtax and adds the surtax amount
     to income tax, combined tax, and surtax liabilities.
     """
-    if calc.policy_param('ID_BenefitSurtax_crt') != 1.:
-        ben = ComputeBenefit(calc,
-                             calc.policy_param('ID_BenefitSurtax_Switch'))
-        agi = calc.array('c00100')
-        ben_deduct = calc.policy_param('ID_BenefitSurtax_crt') * agi
-        ben_exempt_array = calc.policy_param('ID_BenefitSurtax_em')
-        ben_exempt = ben_exempt_array[calc.array('MARS') - 1]
-        ben_dedem = ben_deduct + ben_exempt
-        ben_surtax = (calc.policy_param('ID_BenefitSurtax_trt') *
-                      np.where(ben > ben_dedem, ben - ben_dedem, 0.))
-        # add ben_surtax to income & combined taxes and to surtax subtotal
-        calc.incarray('iitax', ben_surtax)
-        calc.incarray('combined', ben_surtax)
-        calc.incarray('surtax', ben_surtax)
+    threshold_array = calc.policy_param('ID_BenefitSurtax_em')
+    threshold = threshold_array[calc.array('MARS') - 1]
+    agi = calc.array('c00100')
+    if agi > threshold:
+        if calc.policy_param('ID_BenefitSurtax_crt') != 1.:
+            ben = ComputeBenefit(calc,
+                                 calc.policy_param('ID_BenefitSurtax_Switch'))       
+            ben_deduct = calc.policy_param('ID_BenefitSurtax_crt') * agi
+            # ben_exempt_array = calc.policy_param('ID_BenefitSurtax_em')
+            # ben_exempt = ben_exempt_array[calc.array('MARS') - 1]
+            # ben_dedem = ben_deduct + ben_exempt
+            ben_dedem = ben_deduct
+            ben_surtax = (calc.policy_param('ID_BenefitSurtax_trt') *
+                          np.where(ben > ben_dedem, ben - ben_dedem, 0.))
+            # add ben_surtax to income & combined taxes and to surtax subtotal
+            calc.incarray('iitax', ben_surtax)
+            calc.incarray('combined', ben_surtax)
+            calc.incarray('surtax', ben_surtax)
 
 
 def BenefitLimitation(calc):

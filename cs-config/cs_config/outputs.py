@@ -116,13 +116,13 @@ def rate_plot(df_base, df_reform, span, mtr_opt):
                                   line_width=2, line_dash='dashed', legend_label='Payroll Tax Marginal Rate', muted_alpha=0.1, source=df_reform)
 
     iitax_atr_base.muted = False
-    iitax_mtr_base.muted = True
-    payroll_atr_base.muted = True
-    payroll_mtr_base.muted = True
+    iitax_mtr_base.muted = False
+    payroll_atr_base.muted = False
+    payroll_mtr_base.muted = False
     iitax_atr_reform.muted = False
-    iitax_mtr_reform.muted = True
-    payroll_atr_reform.muted = True
-    payroll_mtr_reform.muted = True
+    iitax_mtr_reform.muted = False
+    payroll_atr_reform.muted = False
+    payroll_mtr_reform.muted = False
 
     plot_js = """
     object1.visible = toggle.active
@@ -201,12 +201,12 @@ def credit_plot(df_base, df_reform, span, mtr_opt):
     cdcc_reform = fig.line(x="Axis", y="CDCC", line_color='#d7191c', muted_color='#d7191c', line_width=2,
                            line_dash='dashed', legend_label='Child and Dependent Care Credit', muted_alpha=0.1, source=df_reform)
 
-    ctc_base.muted = True
-    ctc_refund_base.muted = True
-    cdcc_base.muted = True
-    ctc_reform.muted = True
-    ctc_refund_reform.muted = True
-    cdcc_reform.muted = True
+    ctc_base.muted = False
+    ctc_refund_base.muted = False
+    cdcc_base.muted = False
+    ctc_reform.muted = False
+    ctc_refund_reform.muted = False
+    cdcc_reform.muted = False
 
     plot_js = """
     object1.visible = toggle.active

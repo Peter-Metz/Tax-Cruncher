@@ -1853,27 +1853,27 @@ def CDCC_new(CDCC_new_c, CDCC_new_rt, CDCC_new_ps, CDCC_new_pe, CDCC_new_prt, cd
     """
     # credit for at most two cared-for individuals and for actual expenses
     cdcc_new_max_credit = min(f2441, 2) * CDCC_new_c
-    cdcc_new_32800 = max(0., min(e32800 * CDCC_new_rt, cdcc_new_max_credit))
+    cdcc_new = max(0., min(e32800 * CDCC_new_rt, cdcc_new_max_credit))
     # credit is limited to minimum of individuals' earned income
-    cdcc_new_32880 = earned_p  # earned income of taxpayer
-    if MARS == 2:
-        cdcc_new_32890 = earned_s  # earned income of spouse when present
-    else:
-        cdcc_new_32890 = earned_p
-    cdcc_new_33000 = max(0., min(cdcc_new_32800, min(cdcc_new_32880, cdcc_new_32890)))
-    # credit is limited by tax liability
-    cdcc_new = min(max(0., c05800 - e07300), cdcc_new_33000)
+    # cdcc_new_32880 = earned_p  # earned income of taxpayer
+    # if MARS == 2:
+    #     cdcc_new_32890 = earned_s  # earned income of spouse when present
+    # else:
+    #     cdcc_new_32890 = earned_p
+    # cdcc_new_33000 = max(0., min(cdcc_new_32800, min(cdcc_new_32880, cdcc_new_32890)))
+    # # credit is limited by tax liability
+    # cdcc_new = min(max(0., c05800 - e07300), cdcc_new_33000)
     # phaseout based on agi
     positiveagi = max(c00100, 0.)
     cdcc_min = CDCC_new_ps[MARS - 1]
-    cdcc_max = CDCC_new_pe[MARS - 1]
+    # cdcc_max = CDCC_new_pe[MARS - 1]
     if positiveagi < cdcc_min:
         cdcc_new = cdcc_new
-    elif positiveagi < cdcc_max:
-        cdcc_new_reduced = max(0., cdcc_new - CDCC_new_prt * (positiveagi - cdcc_min))
-        cdcc_new = min(cdcc_new, cdcc_new_reduced)
     else:
-        cdcc_new = 0.
+        cdcc_new = max(0., cdcc_new - CDCC_new_prt * (positiveagi - cdcc_min))
+    #     cdcc_new = min(cdcc_new, cdcc_new_reduced)
+    # else:
+    #     cdcc_new = 0.
     
     return cdcc_new
 

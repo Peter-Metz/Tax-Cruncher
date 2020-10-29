@@ -1966,7 +1966,7 @@ def BenefitSurtax(calc):
     threshold_array = calc.policy_param('ID_BenefitSurtax_em')
     threshold = threshold_array[calc.array('MARS') - 1]
     agi = calc.array('c00100')
-    if agi > threshold:
+    if agi[0] > threshold[0]:
         if calc.policy_param('ID_BenefitSurtax_crt') != 1.:
             ben = ComputeBenefit(calc,
                                  calc.policy_param('ID_BenefitSurtax_Switch'))       
